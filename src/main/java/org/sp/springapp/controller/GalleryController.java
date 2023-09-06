@@ -2,11 +2,14 @@ package org.sp.springapp.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.sp.springapp.domain.Gallery;
+import org.sp.springapp.domain.GalleryImg;
 import org.sp.springapp.model.gallery.GalleryDAO;
 import org.sp.springapp.model.gallery.GalleryImgDAO;
 import org.sp.springapp.util.FileManager;
@@ -64,12 +67,15 @@ public class GalleryController {
 		String path=context.getRealPath("/resources/data/");
 		System.out.println("파일이 저장될 풀 경로는 "+path);
 		
+		List<String> nameList = new ArrayList<String>();	//새롭게 생성한 파일명이 누적될 곳
+		
 		for(int i=0;i<photo.length; i++) {
 			String filename=photo[i].getOriginalFilename();
 			System.out.println(filename);
 			
 			//파일명 만들기
 			String newName=FileManager.createFilename(filename);
+			nameList.add(newName);	//파일명 누적
 			
 			File file = new File(path+newName);
 			
@@ -97,8 +103,13 @@ public class GalleryController {
 		
 		//GalleryImg 테이블에 insert
 		//업로드한 이미지 수만큼 insert!!
-		//galleryImgDAO.insert(galleryImg);
+		for(String name : nameList) {
+		GalleryImg galleryImg=new GalleryImg();
+		galleryImg.setGallery(gallery);	//부모의 pk 담기
+		galleryImg.setFilename(name);	//이미지명
 		
+		galleryImgDAO.insert(galleryImg);
+		}
 		return null;
 	}
 }
