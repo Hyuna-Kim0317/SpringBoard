@@ -7,7 +7,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.sp.springapp.domain.Gallery;
+import org.sp.springapp.model.gallery.GalleryDAO;
+import org.sp.springapp.model.gallery.GalleryImgDAO;
 import org.sp.springapp.util.FileManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +20,14 @@ import org.springframework.web.servlet.ModelAndView;
 //갤러리와 관련된 요청을 처리하는 하위 컨트롤러
 @Controller
 public class GalleryController {
+	
+	//DI를 이용하여, 느슨하게 보유해야 한다
+	@Autowired
+	private GalleryDAO galleryDAO;
+	
+	@Autowired
+	private GalleryImgDAO galleryImgDAO;
+	
 	
 	//게시판 목록 요청  처리
 	@RequestMapping(value="/gallery/list",method=RequestMethod.GET)
@@ -75,8 +86,18 @@ public class GalleryController {
 			//photo[i].transferTo(파일객체);
 		}
 		
-		//메모리상에 올라온 파일들을 서버의 지정된 디레고리에 저장하기
+		//Gallery 테이블 insert
+		//여기까지는 아직 gallery DTO의 gallery_idx가 채워지지 않은 0인 상태..
+		System.out.println("DAO 동작 전 gallery_idx is "+ gallery.getGallery_idx());
+		galleryDAO.insert(gallery);
 		
+		//여기부터는 gallery DTO의 gallery_idx는 가장 최신의 sequence 값으로 채워져 있는 상태
+		System.out.println("DAO 동작 전 gallery_idx is "+ gallery.getGallery_idx());
+		
+		
+		//GalleryImg 테이블에 insert
+		//업로드한 이미지 수만큼 insert!!
+		//galleryImgDAO.insert(galleryImg);
 		
 		return null;
 	}

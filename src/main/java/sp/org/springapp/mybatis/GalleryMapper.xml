@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Gallery">
+
+	<!-- 레코드 1건 등록 -->
+	<insert id="insert" parameterType="Gallery">
+		insert into gallery(gallery_idx, title, writer, content)
+		values(seq_gallery.nextval, #{title}, #{writer}, #{content})
+		
+		<selectKey keyColumn="gallery_idx" keyProperty="gallery_idx" resultType="int" order="AFTER">
+			select seq_gallery.currval as gallery_idx from dual
+		</selectKey>
+	</insert>
+ 
+</mapper>

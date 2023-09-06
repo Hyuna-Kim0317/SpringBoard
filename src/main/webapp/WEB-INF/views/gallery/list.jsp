@@ -31,9 +31,8 @@ $(function(){
 </head>
 <body>
 
-	<h2>Zebra Striped Table</h2>
-	<p>For zebra-striped tables, use the nth-child() selector and add a
-		background-color to all even (or odd) table rows:</p>
+	<h2>공지게시판</h2>
+	<p>공지게시판에 오신 걸 환영합니다</p>
 
 	<table>
 		<tr>

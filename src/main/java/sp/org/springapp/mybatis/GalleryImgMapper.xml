@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GalleryImg">
+
+	<!-- dto안에 다른 dto가 포함되어 있다면, 해당 dto의 레퍼런스 변수명을 통해 property 명 접근 -->
+	<insert id="insert" parameterType="GalleryImg">
+		insert into gallery_img(gallery_img_idx, gallery_idx, filename)
+		values(seq_gallery_img.nextval, #{gallery.gallery_idx}, #{filename})
+	</insert>
+ 
+</mapper>
